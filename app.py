@@ -1,12 +1,17 @@
+import os
+
 from dotenv import find_dotenv, load_dotenv
+import openai
 from transformers import pipeline
 
+USE_OPENAI_API = True
+
 load_dotenv(find_dotenv())
+if USE_OPENAI_API:
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-# ing2text
 
-
-def image_to_text(image_url):
+def image_to_text(image_url: str) -> str:
     # More details about tasks supported by the "transformers" library can be found here:
     #   https://huggingface.co/tasks
     # Also:
@@ -91,9 +96,44 @@ def image_to_text(image_url):
     return text_on_image
 
 
-# llm
+def generate_story_openai(scenario: str) -> str:
+    prompt_template = """
+    CONTEXT: {scenario}
+    STORY:
+    """
+    gpt_messages = [
+        {
+            "role": "system",
+            "content": """
+            You are a story teller. You can tell a short story based on a simple narrative.
+            The story should be no longer than 25 words and a few sentences.
+            """,
+        },
+        {
+            "role": "user",
+            "content": prompt_template.format(scenario=scenario),
+        },
+    ]
+    api_response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=gpt_messages,
+    )
+
+    print("generate_story: OpenAI API response:", api_response)
+    response_message = api_response["choices"][0]["message"]
+
+    return response_message
+
+
+def generate_story_oss_model(scenario: str) -> str:
+    return "TODO: Implement integration "
 
 # text to speech
 
-image_to_text(
-    "/Users/val/Documents/Edu/AI/custom-langchain-example/Brick_sign_large__compressed.png")
+
+text_on_image = image_to_text("Brick_sign_large__compressed.png")
+if USE_OPENAI_API:
+    story = generate_story_openai(text_on_image)
+else:
+    story = generate_story_oss_model(text_on_image)
+print("Story:", story)
