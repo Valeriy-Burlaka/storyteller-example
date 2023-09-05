@@ -3,6 +3,7 @@ import os
 from dotenv import find_dotenv, load_dotenv
 import openai
 import requests
+import streamlit as st
 from transformers import pipeline
 
 USE_OPENAI_API = True
@@ -51,12 +52,15 @@ def generate_story_openai(scenario: str) -> str:
             "content": prompt_template.format(scenario=scenario),
         },
     ]
+
+    print("generate_story_openai: Starting API request...")
+
     api_response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=gpt_messages,
     )
 
-    # print("generate_story: OpenAI API response:", api_response)
+    print("generate_story_openai: OpenAI API response:", api_response)
     response_message = api_response["choices"][0]["message"]
 
     return response_message["content"]
@@ -79,7 +83,18 @@ def generate_story_oss_model(scenario: str) -> str:
     return "TODO: Implement integration (wasn't trivial to pick a model)"
 
 
-def generate_speech(text: str) -> str:
+def generate_story(scenario: str) -> str:
+    story = None
+
+    if USE_OPENAI_API:
+        story = generate_story_openai(scenario)
+    else:
+        story = generate_story_oss_model(scenario)
+
+    return story
+
+
+def generate_speech(text: str, output_name="audio.flac") -> str:
     API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {
         "Authorization": f"Bearer {HUGGINGFACE_HUB_API_TOKEN}",
@@ -87,16 +102,54 @@ def generate_speech(text: str) -> str:
     payload = {
         "inputs": text,
     }
+
+    print("generate_speech: Starting API request...")
+
     response = requests.post(API_URL, headers=headers, json=payload)
-    with open("audio.flac", "wb") as f:
+    with open(output_name, "wb") as f:
         f.write(response.content)
 
+    return output_name
 
-text_on_image = image_to_text("Brick_sign_large__compressed.png")
-if USE_OPENAI_API:
-    story = generate_story_openai(text_on_image)
-else:
-    story = generate_story_oss_model(text_on_image)
-print("Story:", story)
 
-speech = generate_speech(story)
+def old_main():
+    text_on_image = image_to_text("Brick_sign_large__compressed.png")
+    if USE_OPENAI_API:
+        story = generate_story_openai(text_on_image)
+    else:
+        story = generate_story_oss_model(text_on_image)
+    print("Story:", story)
+    generate_speech(story)
+
+
+def main():
+    st.set_page_config(page_title="Storyteller", page_icon="📖")
+
+    st.header("Turn any image into a compelling audio story")
+
+    uploaded_file = st.file_uploader(
+        "Choose an image...", type=["png", "jpg", "jpeg"])
+
+    if uploaded_file is not None:
+        print("Uploaded file:", uploaded_file)
+        bytes_data = uploaded_file.getvalue()
+        with open(uploaded_file.name, "wb") as image_file:
+            image_file.write(bytes_data)
+
+        st.image(uploaded_file, caption="Uploaded image.",
+                 use_column_width=True)
+
+        scenario = image_to_text(uploaded_file.name)
+        story = generate_story(scenario)
+        audio_file_name = generate_speech(story)
+
+        with st.expander("scenario"):
+            st.write(scenario)
+        with st.expander("story"):
+            st.write(story)
+
+        st.audio(audio_file_name)
+
+
+if __name__ == "__main__":
+    main()
