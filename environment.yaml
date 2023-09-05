@@ -22,12 +22,12 @@ dependencies:
   - brotli-bin=1.0.9=hca72f7f_7
   - brotlipy=0.7.0=py310hca72f7f_1002
   - bzip2=1.0.8=h1de35cc_0
-  - c-ares=1.19.0=h6c40b1e_0
+  - c-ares=1.19.1=h6c40b1e_0
   - ca-certificates=2023.05.30=hecd8cb5_0
   - certifi=2023.7.22=py310hecd8cb5_0
   - cffi=1.15.1=py310h6c40b1e_3
   - charset-normalizer=2.0.4=pyhd3eb1b0_0
-  - click=8.1.7=unix_pyh707e725_0
+  - click=8.0.4=py310hecd8cb5_0
   - colorama=0.4.6=py310hecd8cb5_0
   - contourpy=1.0.5=py310haf03e11_0
   - cryptography=41.0.2=py310h3b477ad_0
@@ -77,13 +77,12 @@ dependencies:
   - libssh2=1.10.0=h04015c4_2
   - libthrift=0.15.0=h70b4b81_2
   - libtiff=4.5.1=hcec6c5f_0
-  - libuv=1.44.2=h6c40b1e_0
   - libwebp=1.2.4=hf6ce154_1
   - libwebp-base=1.2.4=h6c40b1e_1
   - llvm-openmp=14.0.6=h0dcd299_0
   - lz4-c=1.9.4=hcec6c5f_0
   - markupsafe=2.1.1=py310hca72f7f_0
-  - matplotlib-base=3.7.1=py310ha533b9c_1
+  - matplotlib-base=3.7.2=py310hee32256_0
   - mkl=2023.1.0=h8e150cf_43559
   - mkl-service=2.4.0=py310h6c40b1e_1
   - mkl_fft=1.3.6=py310h3ea8b11_1
@@ -96,8 +95,6 @@ dependencies:
   - munkres=1.1.4=py_0
   - ncurses=6.4=hcec6c5f_0
   - networkx=3.1=py310hecd8cb5_0
-  - ninja=1.10.2=hecd8cb5_5
-  - ninja-base=1.10.2=haf03e11_5
   - numexpr=2.8.4=py310h827a554_1
   - numpy=1.25.2=py310h827a554_0
   - numpy-base=1.25.2=py310ha186be2_0
@@ -127,7 +124,6 @@ dependencies:
   - pyyaml=6.0=py310h6c40b1e_1
   - re2=2022.04.01=he9d5cce_0
   - readline=8.2=hca72f7f_0
-  - regex=2022.7.9=py310hca72f7f_0
   - requests=2.31.0=py310hecd8cb5_0
   - responses=0.13.3=pyhd3eb1b0_0
   - scikit-learn=1.2.2=py310hcec6c5f_0
@@ -141,10 +137,8 @@ dependencies:
   - tenacity=8.2.2=py310hecd8cb5_0
   - threadpoolctl=2.2.0=pyh0d69192_0
   - tk=8.6.12=h5d9f67b_0
-  - tokenizers=0.13.2=py310h5240035_1
   - toml=0.10.2=pyhd3eb1b0_0
   - tqdm=4.65.0=py310h20db666_0
-  - transformers=4.24.0=py310hecd8cb5_0
   - types-pytz=2022.4.0.0=py310hecd8cb5_1
   - typing-extensions=4.7.1=py310hecd8cb5_0
   - typing_extensions=4.7.1=py310hecd8cb5_0
@@ -158,3 +152,8 @@ dependencies:
   - yarl=1.8.1=py310hca72f7f_0
   - zlib=1.2.13=h4dc903c_0
   - zstd=1.5.5=hc035e20_0
+  - pip:
+      - regex==2023.8.8
+      - safetensors==0.3.3
+      - tokenizers==0.13.3
+      - transformers==4.34.0.dev0
