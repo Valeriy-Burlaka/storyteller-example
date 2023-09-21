@@ -112,14 +112,14 @@ def generate_speech(text: str, output_name="audio.flac") -> str:
     return output_name
 
 
-def old_main():
-    text_on_image = image_to_text("Brick_sign_large__compressed.png")
-    if USE_OPENAI_API:
-        story = generate_story_openai(text_on_image)
-    else:
-        story = generate_story_oss_model(text_on_image)
-    print("Story:", story)
-    generate_speech(story)
+# def old_main():
+#     text_on_image = image_to_text("./test_images/Brick_sign_large__compressed.png")
+#     if USE_OPENAI_API:
+#         story = generate_story_openai(text_on_image)
+#     else:
+#         story = generate_story_oss_model(text_on_image)
+#     print("Story:", story)
+#     generate_speech(story)
 
 
 def main():
