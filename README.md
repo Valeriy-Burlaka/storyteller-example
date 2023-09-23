@@ -29,6 +29,14 @@ The Storyteller project is an experimental Python application that converts imag
        conda activate <env-name>
        ```
 
+    - Or using `pipvenv`:
+
+      ```bash
+      pipenv --python 3.8
+      pipenv shell
+      pipenv install -r requirements.txt
+      ```
+
 3. **Setup Environment Variables**
 
     - Copy `.env.example` to `.env`
